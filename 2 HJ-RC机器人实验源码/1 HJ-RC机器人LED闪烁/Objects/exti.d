@@ -3,7 +3,7 @@
 .\objects\exti.o: .\SYSTEM\sys\sys.h
 .\objects\exti.o: .\User\stm32f10x.h
 .\objects\exti.o: .\Libraries\CMSIS\core_cm3.h
-.\objects\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\exti.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\exti.o: .\Libraries\CMSIS\system_stm32f10x.h
 .\objects\exti.o: .\User\stm32f10x_conf.h
 .\objects\exti.o: .\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h
@@ -34,4 +34,4 @@
 .\objects\exti.o: .\APP\key\key.h
 .\objects\exti.o: .\SYSTEM\delay\delay.h
 .\objects\exti.o: .\SYSTEM\usart\usart.h
-.\objects\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\exti.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -2,7 +2,7 @@
 .\objects\motor.o: SYSTEM\motor\motor.h
 .\objects\motor.o: .\User\stm32f10x.h
 .\objects\motor.o: .\Libraries\CMSIS\core_cm3.h
-.\objects\motor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\motor.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\motor.o: .\Libraries\CMSIS\system_stm32f10x.h
 .\objects\motor.o: .\User\stm32f10x_conf.h
 .\objects\motor.o: .\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h
@@ -29,6 +29,6 @@
 .\objects\motor.o: .\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h
 .\objects\motor.o: .\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\motor.o: .\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h
-.\objects\motor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\Math.h
+.\objects\motor.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\Math.h
 .\objects\motor.o: .\SYSTEM\delay\delay.h
 .\objects\motor.o: .\SYSTEM\sys\sys.h

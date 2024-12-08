@@ -553,12 +553,11 @@ ARM Macro Assembler    Page 9
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\startup_stm32f10x_hd.d -o.\objects\startup_stm32f10x_hd.
-o -I"E:\2024 STM32视频教程\STM32F103RCT6麦克纳姆轮HJ-RC机器人\STM32F103RCT6麦克
-纳姆轮HJ-RC机器人\2 HJ-RC机器人实验源码\1 HJ-RC机器人LED闪烁\RTE" -IC:\Keil_v5\
-ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include -IC:\Keil_v5\ARM\CMSIS\Include
- --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVI
-SION_VERSION SETA 521" --predefine="STM32F10X_HD SETA 1" --list=.\listings\star
-tup_stm32f10x_hd.lst Libraries\CMSIS\startup_stm32f10x_hd.s
+o -I"D:\CS301_2024FALL_Project\2 HJ-RC机器人实验源码\1 HJ-RC机器人LED闪烁\RTE" 
+-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include -ID:\Keil_v5\ARM\
+CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --pre
+define="__UVISION_VERSION SETA 521" --predefine="STM32F10X_HD SETA 1" --list=.\
+listings\startup_stm32f10x_hd.lst Libraries\CMSIS\startup_stm32f10x_hd.s
 
 
 
