@@ -1,8 +1,5 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
- ../Core/Inc/stm32f1xx_hal_conf.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h \
+Core/Src/myiic.o: ../Core/Src/myiic.c ../Core/Inc/myiic.h \
+ ../Core/Inc/sys.h \
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h \
  ../Drivers/CMSIS/Include/core_cm3.h \
@@ -10,6 +7,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/CMSIS/Include/cmsis_compiler.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
+ ../Core/Inc/stm32f1xx_hal_conf.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h \
@@ -22,15 +23,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- ../Core/Src/sys.h ../Core/Inc/delay.h ../Core/Inc/sys.h \
- ../Core/Inc/led.h ../Core/Inc/key.h ../Core/Inc/lcd.h ../Core/Inc/main.h \
- ../Core/Inc/touch.h ../Core/Inc/ott2001a.h ../Core/Inc/gt9147.h \
- ../Core/Inc/ft5206.h ../Core/Inc/24cxx.h
-../Core/Inc/main.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
-../Core/Inc/stm32f1xx_hal_conf.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h:
+ ../Core/Inc/delay.h
+../Core/Inc/myiic.h:
+../Core/Inc/sys.h:
 ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h:
 ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h:
 ../Drivers/CMSIS/Include/core_cm3.h:
@@ -38,6 +33,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
 ../Drivers/CMSIS/Include/cmsis_gcc.h:
 ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
+../Core/Inc/stm32f1xx_hal_conf.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h:
@@ -50,15 +49,4 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
-../Core/Src/sys.h:
 ../Core/Inc/delay.h:
-../Core/Inc/sys.h:
-../Core/Inc/led.h:
-../Core/Inc/key.h:
-../Core/Inc/lcd.h:
-../Core/Inc/main.h:
-../Core/Inc/touch.h:
-../Core/Inc/ott2001a.h:
-../Core/Inc/gt9147.h:
-../Core/Inc/ft5206.h:
-../Core/Inc/24cxx.h:

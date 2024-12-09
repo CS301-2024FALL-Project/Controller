@@ -21,7 +21,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "sys.h"
+#include "delay.h"
+#include "led.h"
+#include "key.h"
+#include "lcd.h"
+#include "touch.h"
+#include "24cxx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +62,44 @@ static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
+//电阻触摸屏测试函数
+void rtp_test(void)
+{
+	u8 key;
+	u8 i=0;
+	while(1)
+	{
+	 	key=KEY_Scan(0);
+		tp_dev.scan(0);
+		if(tp_dev.sta&TP_PRES_DOWN)			//触摸屏被按下
+		{
+		 	if(tp_dev.x[0]<lcddev.width&&tp_dev.y[0]<lcddev.height)
+			{
+				if(tp_dev.x[0]>(lcddev.width-24)&&tp_dev.y[0]<16){
+				}
+				else if(tp_dev.x[0]<80&&tp_dev.y[0]<24){
+
+				}
+				else if(tp_dev.x[0]>60&&tp_dev.y[0]>60&&tp_dev.x[0]<180&&tp_dev.y[0]<100){
+
+				}
+				else if(tp_dev.x[0]>0&&tp_dev.y[0]>lcddev.height-24&&tp_dev.x[0]<80&&tp_dev.y[0]<lcddev.height){
+				}
+				else {
+					LCD_DrawPoint(tp_dev.x[0],tp_dev.y[0]);
+				}
+			}
+		}else delay_ms(10);	//没有按键按下的时�?
+		if(key==KEY0_PRES)	//KEY0按下,则执行校准程�?
+		{
+			LCD_Clear(WHITE);	//清屏
+		    TP_Adjust();  		//屏幕校准
+			TP_Save_Adjdata();
+		}
+		i++;
+		if(i%20==0)LED0=!LED0;
+	}
+}
 
 /* USER CODE END PFP */
 
@@ -89,6 +133,10 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
   LCD_Init();
+  LED_Init();							//初始化LED
+  	KEY_Init();							//初始化按�?
+  	LCD_Init();							//初始化LCD
+  	tp_dev.init();				   		//触摸屏初始化
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -98,12 +146,13 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_UARTEx_ReceiveToIdle_DMA(&huart1, receiveData, sizeof(receiveData));
   __HAL_DMA_DISABLE_IT(&hdma_usart1_rx,DMA_IT_HT);
+  rtp_test();
 //  char sendBuffer[256];  // 你可以根据需要调整缓冲区的大小
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
+//  while (1)
   {
     /* USER CODE END WHILE */
 	// 格式化数据，添加前缀 "Received Data: " 和接收到的数据
