@@ -178,7 +178,11 @@ volatile uint16_t start[400] = { 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF,
 		0XFFFF, 0XFFFF, 0XFFBE, 0XFD75, 0XFBAE, 0XFAEB, 0XFAEB, 0XFBAE, 0XFD96,
 		0XFFBE, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF };
 uint8_t board[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //1 is start,2 is end, 3 is block
-uint8_t path[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //1 is path
+uint8_t path[16] = { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
+		17 }; //1 is path
+uint8_t path_p = 0;
+uint8_t path_set = 0;
+uint8_t path_valid = 0;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -202,6 +206,88 @@ void reset_board() {
 		board[i] = 0;
 	}
 }
+void draw_board_line() {
+	POINT_COLOR = BLACK;
+	for (int x = 40; x < 200; x++) {
+		LCD_DrawPoint(x, 50);
+	}
+	for (int x = 40; x < 200; x++) {
+		LCD_DrawPoint(x, 90);
+	}
+	for (int x = 40; x < 200; x++) {
+		LCD_DrawPoint(x, 130);
+	}
+	for (int x = 40; x < 200; x++) {
+		LCD_DrawPoint(x, 170);
+	}
+	for (int x = 40; x < 200; x++) {
+		LCD_DrawPoint(x, 210);
+	}
+	for (int x = 50; x < 210; x++) {
+		LCD_DrawPoint(40, x);
+	}
+	for (int x = 50; x < 210; x++) {
+		LCD_DrawPoint(80, x);
+	}
+	for (int x = 50; x < 210; x++) {
+		LCD_DrawPoint(120, x);
+	}
+	for (int x = 50; x < 210; x++) {
+		LCD_DrawPoint(160, x);
+	}
+	for (int x = 50; x < 210; x++) {
+		LCD_DrawPoint(200, x);
+	}
+}
+void draw_board() {
+	for (int i = 0; i < 16; i++) {
+		if (board[i] == 1) {
+			lcd_showpic((i / 4 + 1) * 40 + 20, (i % 4 + 1) * 40 + 10, 20, 20, 1,
+					start);
+		} else if (board[i] == 2) {
+			lcd_showpic((i / 4 + 1) * 40 + 20, (i % 4 + 1) * 40 + 10, 20, 20, 1,
+					end);
+		} else if (board[i] == 3) {
+			lcd_showpic((i / 4 + 1) * 40 + 20, (i % 4 + 1) * 40 + 10, 20, 20, 1,
+					block);
+		}
+	}
+
+}
+void draw_block(int i){
+	lcd_showpic((i / 4 + 1) * 40 + 20, (i % 4 + 1) * 40 + 10, 20, 20, 1,
+						block);
+}
+void reset_path() {
+	for (int i = 0; i < 16; i++) {
+		path[i] = 17;
+	}
+	path_p = 0;
+	path_set = 0;
+	path_valid = 0;
+	LCD_Fill(40, 50, 200, 210, WHITE);
+	draw_board_line();
+	draw_board();
+}
+void valid_path() {
+	path_valid = 1;
+	for (int i = 0; i < path_p; i++) {
+		if (path[i] == 17) {
+			path_valid = 0;
+			break;
+		} else if (board[path[i]] == 3) {
+			path_valid = 0;
+			break;
+		}
+	}
+	if (board[path[0]] != 1) {
+		path_valid = 0;
+	}
+	if (board[path[path_p - 1]] != 2) {
+		path_valid = 0;
+	}
+}
+
 void bluetooth_state(int state) {
 	if (state == 0) {
 		POINT_COLOR = WHITE;
@@ -266,41 +352,17 @@ void T3_state(int state, u16 pc) {
 	case 15:
 		LCD_ShowString(2, 25, 250, 16, 16, "Draw line");
 		break;
+	case 16:
+		LCD_ShowString(2, 25, 250, 16, 16, "Please redesign path!");
+		break;
+	case 17:
+		LCD_ShowString(2, 25, 250, 16, 16, "Path set!");
+		break;
+	case 18:
+		LCD_ShowString(2, 25, 250, 16, 16, "Reset!");
+		break;
 	default:
 		break;
-	}
-}
-void draw_board_line() {
-	POINT_COLOR = BLACK;
-	for (int x = 40; x < 200; x++) {
-		LCD_DrawPoint(x, 50);
-	}
-	for (int x = 40; x < 200; x++) {
-		LCD_DrawPoint(x, 90);
-	}
-	for (int x = 40; x < 200; x++) {
-		LCD_DrawPoint(x, 130);
-	}
-	for (int x = 40; x < 200; x++) {
-		LCD_DrawPoint(x, 170);
-	}
-	for (int x = 40; x < 200; x++) {
-		LCD_DrawPoint(x, 210);
-	}
-	for (int x = 50; x < 210; x++) {
-		LCD_DrawPoint(40, x);
-	}
-	for (int x = 50; x < 210; x++) {
-		LCD_DrawPoint(80, x);
-	}
-	for (int x = 50; x < 210; x++) {
-		LCD_DrawPoint(120, x);
-	}
-	for (int x = 50; x < 210; x++) {
-		LCD_DrawPoint(160, x);
-	}
-	for (int x = 50; x < 210; x++) {
-		LCD_DrawPoint(200, x);
 	}
 }
 /* USER CODE BEGIN PFP */
@@ -309,8 +371,9 @@ void rtp_test(void) {
 	u8 key;
 	u8 i = 0;
 	uint8_t state = 100;
-	uint8_t task = 2;
+	uint8_t task = 1;//1是基础，2是T3，3是T4
 	uint8_t task_changed = 1;
+	uint8_t delay = 1;
 	delay_ms(5);
 	while (1) {
 		// 展示区域
@@ -370,6 +433,9 @@ void rtp_test(void) {
 				LCD_draw_round_rect(80, 255, 60, 30, 5, BLUE,
 				BLUE);
 				LCD_ShowString(85, 255, 60, 24, 24, "Back");
+				LCD_draw_round_rect(150, 255, 60, 30, 5, BLUE,
+				BLUE);
+				LCD_ShowString(155, 255, 60, 24, 24, "Draw");
 				break;
 			case 3:
 				draw_board_line();
@@ -382,13 +448,16 @@ void rtp_test(void) {
 				LCD_ShowString(95, 220, 60, 24, 24, "EndP");
 				LCD_draw_round_rect(155, 220, 70, 30, 5, BLUE,
 				BLUE);
-				LCD_ShowString(160, 220, 70, 24, 24, "Block");
+				LCD_ShowString(160, 220, 70, 24, 24, "Reset");
 				LCD_draw_round_rect(5, 255, 70, 30, 5, BLUE,
 				BLUE);
 				LCD_ShowString(10, 255, 70, 24, 24, "Start");
 				LCD_draw_round_rect(80, 255, 60, 30, 5, BLUE,
 				BLUE);
 				LCD_ShowString(85, 255, 60, 24, 24, "Back");
+//				LCD_draw_round_rect(150, 255, 60, 30, 5, BLUE,
+//				BLUE);
+//				LCD_ShowString(155, 255, 60, 24, 24, "Reset");
 				break;
 			case 4:
 				break;
@@ -489,23 +558,24 @@ void rtp_test(void) {
 					//EndP
 				} else if (tp_dev.x[0] > 155 && tp_dev.y[0] > 220
 						&& tp_dev.x[0] < 225 && tp_dev.y[0] < 250) {
-					if (state != 2) {
-						T3_state(state, WHITE);
-						state = 2;
-						T3_state(state, BLACK);
-					}
-//					} else {
-//						T3_state(state, WHITE);
-//						state = 15;
-//						T3_state(state, BLACK);
-//					}
+					T3_state(state, WHITE);
+					state = 2;
+					T3_state(state, BLACK);
 					//Block
 				} else if (tp_dev.x[0] > 5 && tp_dev.y[0] > 255
 						&& tp_dev.x[0] < 75 && tp_dev.y[0] < 285) {
-					T3_state(state, WHITE);
-					state = 3;
-					T3_state(state, BLACK);
-					//Start
+					valid_path();
+					if (path_valid) {
+						T3_state(state, WHITE);
+						state = 3;
+						T3_state(state, BLACK);
+						//Start 在这里发送path串即可，可以全发也可以只发前path_p个，后续补全部分为全17
+					} else {
+						T3_state(state, WHITE);
+						state = 16;
+						T3_state(state, RED);
+					}
+
 				} else if (tp_dev.x[0] > 80 && tp_dev.y[0] > 255
 						&& tp_dev.x[0] < 140 && tp_dev.y[0] < 285) {
 					T3_state(state, WHITE);
@@ -514,21 +584,35 @@ void rtp_test(void) {
 					task = 1;
 					task_changed = 1;
 					//Back
-				} else if (tp_dev.x[0] > 40 && tp_dev.y[0] > 50
+				} else if (tp_dev.x[0] > 150 && tp_dev.y[0] > 255
+						&& tp_dev.x[0] < 210 && tp_dev.y[0] < 285) {
+					T3_state(state, WHITE);
+					state = 15;
+					T3_state(state, BLACK);
+					reset_path();
+					//Draw line
+				}
+
+				else if (tp_dev.x[0] > 40 && tp_dev.y[0] > 50
 						&& tp_dev.x[0] < 200 && tp_dev.y[0] < 210) {
 					u8 v_str[100];
 					u8 x = tp_dev.x[0] / 40 - 1;
 					u8 y = (tp_dev.y[0] - 10) / 40 - 1;
-					LCD_ShowString_o(5, 295, 230, 16, 16, v_str);
 					u8 index = x + 4 * y;
-					sprintf(v_str, "x_o:%u,y_o:%u,x:%u,y:%u,%u", tp_dev.x[0],
-							tp_dev.y[0], x, y, index);
-
+//					sprintf(v_str, "x_o:%u,y_o:%u,x:%u,y:%u,%u", tp_dev.x[0],
+//							tp_dev.y[0], x, y, index);
+//					LCD_ShowString_o(5, 295, 230, 16, 16, v_str);
 					if (state == 2) {
 						if (board[index] != 1 && board[index] != 2) {
-							lcd_showpic((y + 1) * 40 + 20, (x + 1) * 40 + 10,
-									20, 20, 1, block);
-							board[index] = 3;
+							if (board[index] != 3) {
+								lcd_showpic((y + 1) * 40 + 20,
+										(x + 1) * 40 + 10, 20, 20, 1, block);
+								board[index] = 3;
+							} else {
+								lcd_rm_pic_w((y + 1) * 40 + 20,
+										(x + 1) * 40 + 10, 20, 20, 1, block);
+								board[index] = 0;
+							}
 						}
 
 					} else if (state == 0) {
@@ -537,7 +621,7 @@ void rtp_test(void) {
 							for (int i = 0; i < 16; i++) {
 								if (board[i] == 1) {
 									is_set = i;
-									board[i]=0;
+									board[i] = 0;
 									break;
 								}
 							}
@@ -563,7 +647,7 @@ void rtp_test(void) {
 							for (int i = 0; i < 16; i++) {
 								if (board[i] == 2) {
 									is_set = i;
-									board[i]=0;
+									board[i] = 0;
 									break;
 								}
 							}
@@ -583,14 +667,138 @@ void rtp_test(void) {
 							state = 14;
 							T3_state(state, BLACK);
 						}
-					} else {
+					} else if (state == 15) {
+						delay = 0;
 						POINT_COLOR = BLACK;
-						LCD_DrawPoint(tp_dev.x[0], tp_dev.y[0]);
+						LCD_Fast_DrawPoint(tp_dev.x[0], tp_dev.y[0], BLACK);
+						if (path_p == 0) {
+							path[path_p] = index;
+							path_p++;
+						} else if (path_p == 1) {
+							if (path[0] != index) {
+								path[path_p] = index;
+								path_p++;
+							}
+						} else if (path[path_p - 1] == index) {
+						} else if (path[path_p - 2] == index) {
+							path[path_p - 1] = 17;
+							path_p--;
+						} else {
+							path[path_p] = index;
+							path_p++;
+						}
 					}
 				}
 
 				break;
 			case 3:
+				if (tp_dev.x[0] > 5 && tp_dev.y[0] > 220 && tp_dev.x[0] < 85
+						&& tp_dev.y[0] < 250) {
+					T3_state(state, WHITE);
+					state = 0;
+					T3_state(state, BLACK);
+					//StartP
+				} else if (tp_dev.x[0] > 90 && tp_dev.y[0] > 220
+						&& tp_dev.x[0] < 150 && tp_dev.y[0] < 250) {
+					T3_state(state, WHITE);
+					state = 1;
+					T3_state(state, BLACK);
+					//EndP
+				} else if (tp_dev.x[0] > 155 && tp_dev.y[0] > 220
+						&& tp_dev.x[0] < 225 && tp_dev.y[0] < 250) {
+					T3_state(state, WHITE);
+					state = 18;
+					T3_state(state, BLACK);
+					reset_board();
+					reset_path();
+					//Reset1
+				} else if (tp_dev.x[0] > 5 && tp_dev.y[0] > 255
+						&& tp_dev.x[0] < 75 && tp_dev.y[0] < 285) {
+					if (path_valid) {
+						T3_state(state, WHITE);
+						state = 3;
+						T3_state(state, BLACK);
+						//Start
+					} else {
+						T3_state(state, WHITE);
+						state = 16;
+						T3_state(state, RED);
+					}
+
+				} else if (tp_dev.x[0] > 80 && tp_dev.y[0] > 255
+						&& tp_dev.x[0] < 140 && tp_dev.y[0] < 285) {
+					T3_state(state, WHITE);
+					state = 100;
+					T3_state(state, BLACK);
+					task = 1;
+					task_changed = 1;
+					//Back
+				}
+
+				else if (tp_dev.x[0] > 40 && tp_dev.y[0] > 50
+						&& tp_dev.x[0] < 200 && tp_dev.y[0] < 210) {
+					u8 v_str[100];
+					u8 x = tp_dev.x[0] / 40 - 1;
+					u8 y = (tp_dev.y[0] - 10) / 40 - 1;
+					u8 index = x + 4 * y;
+					//					sprintf(v_str, "x_o:%u,y_o:%u,x:%u,y:%u,%u", tp_dev.x[0],
+					//							tp_dev.y[0], x, y, index);
+					//					LCD_ShowString_o(5, 295, 230, 16, 16, v_str);
+					if (state == 0) {
+						if (board[index] != 2) {
+							u8 is_set = 17;
+							for (int i = 0; i < 16; i++) {
+								if (board[i] == 1) {
+									is_set = i;
+									board[i] = 0;
+									break;
+								}
+							}
+							if (is_set != 17) {
+								lcd_rm_pic_w((is_set / 4 + 1) * 40 + 20,
+										(is_set % 4 + 1) * 40 + 10, 20, 20, 1,
+										start);
+							}
+							if (board[index] == 3) {
+								lcd_rm_pic_w((y + 1) * 40 + 20,
+										(x + 1) * 40 + 10, 20, 20, 1, block);
+							}
+							lcd_showpic((y + 1) * 40 + 20, (x + 1) * 40 + 10,
+									20, 20, 1, start);
+							board[index] = 1;
+							T3_state(state, WHITE);
+							state = 13;
+							T3_state(state, BLACK);
+						}
+					} else if (state == 1) {
+						if (board[index] != 1) {
+							u8 is_set = 17;
+							for (int i = 0; i < 16; i++) {
+								if (board[i] == 2) {
+									is_set = i;
+									board[i] = 0;
+									break;
+								}
+							}
+							if (is_set != 17) {
+								lcd_rm_pic_w((is_set / 4 + 1) * 40 + 20,
+										(is_set % 4 + 1) * 40 + 10, 20, 20, 1,
+										end);
+							}
+							if (board[index] == 3) {
+								lcd_rm_pic_w((y + 1) * 40 + 20,
+										(x + 1) * 40 + 10, 20, 20, 1, block);
+							}
+							lcd_showpic((y + 1) * 40 + 20, (x + 1) * 40 + 10,
+									20, 20, 1, end);
+							board[index] = 2;
+							T3_state(state, WHITE);
+							state = 14;
+							T3_state(state, BLACK);
+						}
+					}
+				}
+
 				break;
 			case 4:
 				break;
@@ -602,13 +810,16 @@ void rtp_test(void) {
 				break;
 			}
 		}
-//			delay_ms(10);	//没有按键按下的时�?
+		if (delay)
+			HAL_Delay(100);
+		//没有按键按下的时�?
 		//////////////////////////////////////////////////////////////////////////////////////
 		if (key == KEY0_PRES)	//KEY0按下,则执行校准程�?
 		{
 			LCD_Clear(WHITE);	//清屏
 			TP_Adjust();  		//屏幕校准
 			TP_Save_Adjdata();
+			task_changed = 1;
 		}
 		i++;
 		if (i % 20 == 0)

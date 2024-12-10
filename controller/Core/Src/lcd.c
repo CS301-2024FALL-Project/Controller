@@ -68,15 +68,7 @@ void lcd_showpic_w(uint16_t x, uint16_t y, uint16_t column, uint16_t row,
 }
 void lcd_rm_pic_w(uint16_t x, uint16_t y, uint16_t column, uint16_t row,
 		uint8_t l, unsigned short *pic) {
-	uint16_t m, n;
-	uint16_t tt = GREEN;
-	uint16_t *data = (uint16_t*) pic;
-	for (n = 0 + x; n < l * row + x; n += l) {
-		for (m = 0 + y; m < l * column + y; m += l) {
-			//if(*data!=WHITE)
-			LCD_Fast_DrawSquare_rm(m, n, l, *data++);
-		}
-	}
+	LCD_Fill(y-2, x-2, y+column+2, x+row+2, WHITE);
 }
 //д���ݺ���
 //�������LCD_WR_DATAX��,��ʱ�任�ռ�.

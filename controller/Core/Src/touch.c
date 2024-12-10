@@ -4,6 +4,7 @@
 #include "stdlib.h"
 #include "math.h"
 #include "24cxx.h" 
+#include "key.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //������ֻ��ѧϰʹ�ã�δ��������ɣ��������������κ���;
 //ALIENTEK STM32������
@@ -276,7 +277,8 @@ void TP_Adj_Info_Show(u16 x0,u16 y0,u16 x1,u16 y1,u16 x2,u16 y2,u16 x3,u16 y3,u1
 //������У׼����
 //�õ��ĸ�У׼����
 void TP_Adjust(void)
-{								 
+{
+	u8 key;
 	u16 pos_temp[4][2];//���껺��ֵ
 	u8  cnt=0;	
 	u16 d1,d2;
@@ -294,11 +296,14 @@ void TP_Adjust(void)
 	TP_Drow_Touch_Point(20,20,RED);//����1 
 	tp_dev.sta=0;//���������ź� 
 	tp_dev.xfac=0;//xfac��������Ƿ�У׼��,����У׼֮ǰ�������!�������	 
+
 	while(1)//�������10����û�а���,���Զ��˳�
 	{
+		key = KEY_Scan(0);
 		tp_dev.scan(1);//ɨ����������
 		if((tp_dev.sta&0xc0)==TP_CATH_PRES)//����������һ��(��ʱ�����ɿ���.)
 		{	
+			LCD_Fast_DrawPoint(tp_dev.x[0], tp_dev.y[0],BLACK);
 			outtime=0;		
 			tp_dev.sta&=~(1<<6);//��ǰ����Ѿ����������.
 						   			   
@@ -415,14 +420,21 @@ void TP_Adjust(void)
  					LCD_Clear(WHITE);//����   
 					return;//У�����				 
 			}
+			delay_ms(10);
 		}
-		delay_ms(10);
+
 		outtime++;
-		if(outtime>1000)
+		if(outtime>10000)
 		{
 			TP_Get_Adjdata();
-			break;
+//			break;
 	 	} 
+		if (key == KEY1_PRES)	//KEY0按下,则执行校准程�?
+				{
+					LCD_Clear(WHITE);	//清屏
+					TP_Save_Adjdata();
+					break;
+				}
  	}
 }	 
 //��������ʼ��  		    
