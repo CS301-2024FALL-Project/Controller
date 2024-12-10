@@ -270,8 +270,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		    POINT_COLOR = BLACK;
 			LCD_ShowString_o(150, 290, 200, 16, 16, "Block: ");
 			LCD_ShowString_o(206, 290, 200, 16, 16, payload);
-			int block = atoi((char *)&payload);
-			draw_block(block);
+			int a = payload[0]-'0';
+			int b = payload[1]-'0';
+			draw_block(10*a+b);
 		} else {
 			// 未知数据类型
 		}

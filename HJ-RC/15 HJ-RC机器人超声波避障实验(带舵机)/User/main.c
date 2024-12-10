@@ -88,6 +88,19 @@ int right_detection()
 
 
 
+//     char buffer[50]; // 用于存储要发送的数据
+
+//    // 构造距离信息 "D <distance>"
+//    snprintf(buffer, sizeof(buffer), "D %.2f\n", distance);
+//    HAL_UART_Transmit_DMA(&huart1, (uint8_t *)buffer, strlen(buffer));
+
+//    HAL_Delay(50); // 等待上一次发送完成
+
+//    // 构造障碍物信息 "B <block>"
+//    snprintf(buffer, sizeof(buffer), "B %d\n", block);
+//    HAL_UART_Transmit_DMA(&huart1, (uint8_t *)buffer, strlen(buffer));
+ 
+ 
 
 //#include "stm32f10x.h"
 //#include "delay.h"
