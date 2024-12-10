@@ -7,9 +7,9 @@
 ../Core/Src/main.c:304:6:bluetooth_state	2
 ../Core/Src/main.c:317:6:T3_state	20
 ../Core/Src/main.c:383:6:rtp_test	140
-../Core/Src/main.c:891:5:main	1
-../Core/Src/main.c:960:6:SystemClock_Config	3
-../Core/Src/main.c:997:13:MX_USART1_UART_Init	2
-../Core/Src/main.c:1026:13:MX_DMA_Init	1
-../Core/Src/main.c:1046:13:MX_GPIO_Init	1
-../Core/Src/main.c:1066:6:Error_Handler	1
+../Core/Src/main.c:895:5:main	1
+../Core/Src/main.c:964:6:SystemClock_Config	3
+../Core/Src/main.c:1001:13:MX_USART1_UART_Init	2
+../Core/Src/main.c:1030:13:MX_DMA_Init	1
+../Core/Src/main.c:1050:13:MX_GPIO_Init	1
+../Core/Src/main.c:1070:6:Error_Handler	1

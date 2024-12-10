@@ -598,7 +598,11 @@ void rtp_test(void) {
 						state = 3;
 						T3_state(state, BLACK);
 						//Start 在这里发送path串即可，可以全发也可以只发前path_p个，后续补全部分为全17
-						HAL_UART_Transmit_DMA(&huart1, path, sizeof(path));
+						uint8_t header = 'P';   // 定义包头 'P'
+						uint8_t buffer[1 + sizeof(path)];
+						buffer[0] = header;  // 设置包头
+						memcpy(&buffer[1], path, sizeof(path));  // 将 path 数据拷贝到 buffer 中
+						HAL_UART_Transmit_DMA(&huart1, buffer, sizeof(buffer));
 					} else {
 						T3_state(state, WHITE);
 						state = 16;
