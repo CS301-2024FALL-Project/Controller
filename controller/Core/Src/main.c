@@ -193,7 +193,20 @@ DMA_HandleTypeDef hdma_usart1_rx;
 /* USER CODE BEGIN PV */
 uint8_t txCompleteFlag = 0;
 uint8_t receiveData[50];
-uint8_t sendData[6][4] = { "ONA", "ONB", "ONC", "OND", "ONE", "ONF" }; // 要发送的数据
+//---------------------------------------------------------
+//Task1 Commands:
+	//ONA:FORWARD;
+	//ONB:BACKWARD
+	//ONC:TURN LEFT
+	//OND:TURN RIGHT
+	//ONE:LEFT
+	//ONF:RIGHT
+	//STP:STOP
+	//PAT:PATH DESIGN
+	//BLO:BLOCK
+//------------------------------------------------------------
+uint8_t sendData[9][4] = { "ONA", "ONB", "ONC", "OND", "ONE", "ONF", "STP", "PAT","BLO"}; // 要发送的数据
+uint8_t task4Command[3][5] = {"STPT","EDPT","BEGN"};
 /* USER CODE END PV */
 int bluetooth_connected = 0;
 /* Private function prototypes -----------------------------------------------*/
@@ -486,42 +499,49 @@ void rtp_test(void) {
 					state = 6;
 					T3_state(state, BLACK);
 					//Left
+					HAL_UART_Transmit_DMA(&huart1, sendData[4], strlen((char *)sendData[4]));
 				} else if (tp_dev.x[0] > 47 && tp_dev.y[0] > 80
 						&& tp_dev.x[0] < 97 && tp_dev.y[0] < 100) {
 					T3_state(state, WHITE);
 					state = 8;
 					T3_state(state, BLACK);
 					//TurnL
+					HAL_UART_Transmit_DMA(&huart1, sendData[2], strlen((char *)sendData[2]));
 				} else if (tp_dev.x[0] > 195 && tp_dev.y[0] > 80
 						&& tp_dev.x[0] < 245 && tp_dev.y[0] < 100) {
 					T3_state(state, WHITE);
 					state = 7;
 					T3_state(state, BLACK);
 					//Right
+					HAL_UART_Transmit_DMA(&huart1, sendData[5], strlen((char *)sendData[5]));
 				} else if (tp_dev.x[0] > 142 && tp_dev.y[0] > 80
 						&& tp_dev.x[0] < 192 && tp_dev.y[0] < 100) {
 					T3_state(state, WHITE);
 					state = 9;
 					T3_state(state, BLACK);
 					//TurnR
+					HAL_UART_Transmit_DMA(&huart1, sendData[3], strlen((char *)sendData[3]));
 				} else if (tp_dev.x[0] > 85 && tp_dev.y[0] > 50
 						&& tp_dev.x[0] < 155 && tp_dev.y[0] < 70) {
 					T3_state(state, WHITE);
 					state = 4;
 					T3_state(state, BLACK);
 					//Forward
+					HAL_UART_Transmit_DMA(&huart1, sendData[0], strlen((char *)sendData[0]));
 				} else if (tp_dev.x[0] > 100 && tp_dev.y[0] > 80
 						&& tp_dev.x[0] < 140 && tp_dev.y[0] < 100) {
 					T3_state(state, WHITE);
 					state = 10;
 					T3_state(state, BLACK);
 					//Stop
+					HAL_UART_Transmit_DMA(&huart1, sendData[6], strlen((char *)sendData[6]));
 				} else if (tp_dev.x[0] > 80 && tp_dev.y[0] > 110
 						&& tp_dev.x[0] < 160 && tp_dev.y[0] < 130) {
 					T3_state(state, WHITE);
 					state = 5;
 					T3_state(state, BLACK);
 					//Backward
+					HAL_UART_Transmit_DMA(&huart1, sendData[1], strlen((char *)sendData[1]));
 				} else if (tp_dev.x[0] > 10 && tp_dev.y[0] > 180
 						&& tp_dev.x[0] < 160 && tp_dev.y[0] < 200) {
 					T3_state(state, WHITE);
@@ -530,6 +550,12 @@ void rtp_test(void) {
 					task = 2;
 					task_changed = 1;
 					//Path design
+					HAL_UART_Transmit_DMA(&huart1, sendData[7], strlen((char *)sendData[7]));
+					//----------------------------------------------
+					//
+
+
+					//----------------------------------------------
 				} else if (tp_dev.x[0] > 10 && tp_dev.y[0] > 210
 						&& tp_dev.x[0] < 160 && tp_dev.y[0] < 230) {
 					T3_state(state, WHITE);
@@ -538,9 +564,11 @@ void rtp_test(void) {
 					task = 3;
 					task_changed = 1;
 					//Block detection
+					HAL_UART_Transmit_DMA(&huart1, sendData[8], strlen((char *)sendData[8]));
 				} else {
 					POINT_COLOR = BLACK;
 					LCD_DrawPoint(tp_dev.x[0], tp_dev.y[0]);
+					HAL_UART_Transmit_DMA(&huart1, sendData[6], strlen((char *)sendData[6]));
 				}
 				break;
 			case 2:
@@ -570,6 +598,7 @@ void rtp_test(void) {
 						state = 3;
 						T3_state(state, BLACK);
 						//Start 在这里发送path串即可，可以全发也可以只发前path_p个，后续补全部分为全17
+						HAL_UART_Transmit_DMA(&huart1, path, sizeof(path));
 					} else {
 						T3_state(state, WHITE);
 						state = 16;
@@ -697,13 +726,21 @@ void rtp_test(void) {
 					T3_state(state, WHITE);
 					state = 0;
 					T3_state(state, BLACK);
-					//StartP
+//					//StartP
+//					//--------------------------------------------------------
+//					//TODO:起点，给我返回一个“STPT 11”格式的变量，表示第12个格子被设置为了起点
+//					//--------------------------------------------------------
+//					HAL_UART_Transmit_DMA(&huart1, task4Command[0], sizeof(task4Command[0]));
 				} else if (tp_dev.x[0] > 90 && tp_dev.y[0] > 220
 						&& tp_dev.x[0] < 150 && tp_dev.y[0] < 250) {
 					T3_state(state, WHITE);
 					state = 1;
 					T3_state(state, BLACK);
-					//EndP
+//					EndP
+//					--------------------------------------------------------
+//					TODO:终点，给我返回一个“EDPT 11”格式的变量，表示第12个格子被设置为了终点
+//					--------------------------------------------------------
+//					HAL_UART_Transmit_DMA(&huart1, task4Command[1], sizeof(task4Command[1]));
 				} else if (tp_dev.x[0] > 155 && tp_dev.y[0] > 220
 						&& tp_dev.x[0] < 225 && tp_dev.y[0] < 250) {
 					T3_state(state, WHITE);
@@ -714,16 +751,28 @@ void rtp_test(void) {
 					//Reset1
 				} else if (tp_dev.x[0] > 5 && tp_dev.y[0] > 255
 						&& tp_dev.x[0] < 75 && tp_dev.y[0] < 285) {
-					if (path_valid) {
-						T3_state(state, WHITE);
-						state = 3;
-						T3_state(state, BLACK);
-						//Start
-					} else {
-						T3_state(state, WHITE);
-						state = 16;
-						T3_state(state, RED);
-					}
+						uint8_t s=16;
+						uint8_t e=16;
+						for(int i=0;i<16;i++){
+							if(board[i]==1){
+								s=i;
+							}else if(board[i]==2){
+								e=i;
+							}
+						}
+						if (s!=16&&e!=16) {
+							T3_state(state, WHITE);
+							state = 3;
+							T3_state(state, BLACK);
+							//Start
+						} else {
+							T3_state(state, WHITE);
+							state = 16;
+							T3_state(state, RED);
+						}
+					char command[10]; // 用于存储命令字符串
+					snprintf(command, sizeof(command), "T4 %d %d", s, e); // 构造字符串
+					HAL_UART_Transmit_DMA(&huart1, command, strlen(command));
 
 				} else if (tp_dev.x[0] > 80 && tp_dev.y[0] > 255
 						&& tp_dev.x[0] < 140 && tp_dev.y[0] < 285) {
@@ -811,7 +860,7 @@ void rtp_test(void) {
 			}
 		}
 		if (delay)
-			HAL_Delay(100);
+			HAL_Delay(300);
 		//没有按键按下的时�?
 		//////////////////////////////////////////////////////////////////////////////////////
 		if (key == KEY0_PRES)	//KEY0按下,则执行校准程�?

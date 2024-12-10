@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_it.h"
+#include  "lcd.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -250,12 +251,33 @@ void USART1_IRQHandler(void)
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
 	if(huart == &huart1){
-//		 	 char sendBuffer[256];  // 你可以根据需要调整缓冲区的大�?
-//		    // 格式化数据，添加前缀 "Received Data: " 和接收到的数�?
+//		 	 char sendBuffer[256];  // 你可以根据需要调整缓冲区的大�?
+//		    // 格式化数据，添加前缀 "Received Data: " 和接收到的数�?
 //		    sprintf(sendBuffer, sizeof(sendBuffer), "Received Data: %s", receiveData);
-		    // 通过 DMA 发�?�格式化后的数据
-	      LCD_ShowString(60,60,200,24,24, receiveData);
+		    // 通过 DMA 发�?�格式化后的数据
+		 receiveData[sizeof(receiveData) - 1] = '\0';
+		 char buffer[50];
+		 uint8_t header = receiveData[0];
+		 uint8_t *payload = &receiveData[2];
+		 if (header == 'D') {
+		        // Distance 数据
+			 // 解析距离信息
+			    POINT_COLOR = BLACK;
+				LCD_ShowString_o(10, 290, 200, 16, 16, "Distance: ");
+				LCD_ShowString_o(90, 290, 200, 16, 16, payload);
+		} else if (header == 'B') {
+			// Block 数据
+		    POINT_COLOR = BLACK;
+			LCD_ShowString_o(150, 290, 200, 16, 16, "Block: ");
+			LCD_ShowString_o(206, 290, 200, 16, 16, payload);
+			int block = atoi((char *)&payload);
+			draw_block(block);
+		} else {
+			// 未知数据类型
+		}
+//	      LCD_ShowString(60,60,200,24,24, receiveData);
 //		  HAL_UART_Transmit_DMA(&huart1, receiveData, Size);
+
 		  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, receiveData, sizeof(receiveData));
 		  __HAL_DMA_DISABLE_IT(&hdma_usart1_rx,DMA_IT_HT);
 	}
@@ -263,12 +285,12 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 
 
 // DMA传输完成回调函数
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART1)  // 确保�? USART1 传输完毕
-    {
-    	LCD_ShowString(0,0,200,24,24, "Finish");
-        txCompleteFlag = 1;  // 设置传输完成标志
-    }
-}
+//void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//    if (huart->Instance == USART1)  // 确保�? USART1 传输完毕
+//    {
+//    	LCD_ShowString(0,0,200,24,24, "Finish");
+//        txCompleteFlag = 1;  // 设置传输完成标志
+//    }
+//}
 /* USER CODE END 1 */
