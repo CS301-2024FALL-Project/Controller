@@ -23,7 +23,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../Core/Src/sys.h ../Core/Inc/delay.h ../Core/Inc/sys.h \
- ../Core/Inc/led.h ../Core/Inc/key.h ../Core/Inc/lcd.h ../Core/Inc/main.h \
+ ../Core/Inc/led.h ../Core/Inc/key.h ../Core/Inc/lcd.h \
  ../Core/Inc/touch.h ../Core/Inc/ott2001a.h ../Core/Inc/gt9147.h \
  ../Core/Inc/ft5206.h ../Core/Inc/24cxx.h
 ../Core/Inc/main.h:
@@ -56,7 +56,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/led.h:
 ../Core/Inc/key.h:
 ../Core/Inc/lcd.h:
-../Core/Inc/main.h:
 ../Core/Inc/touch.h:
 ../Core/Inc/ott2001a.h:
 ../Core/Inc/gt9147.h:

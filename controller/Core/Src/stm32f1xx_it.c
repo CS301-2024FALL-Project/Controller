@@ -250,10 +250,10 @@ void USART1_IRQHandler(void)
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
 	if(huart == &huart1){
-//		 	 char sendBuffer[256];  // 你可以根据需要调整缓冲区的大小
-//		    // 格式化数据，添加前缀 "Received Data: " 和接收到的数据
+//		 	 char sendBuffer[256];  // 你可以根据需要调整缓冲区的大�?
+//		    // 格式化数据，添加前缀 "Received Data: " 和接收到的数�?
 //		    sprintf(sendBuffer, sizeof(sendBuffer), "Received Data: %s", receiveData);
-		    // 通过 DMA 发送格式化后的数据
+		    // 通过 DMA 发�?�格式化后的数据
 	      LCD_ShowString(60,60,200,24,24, receiveData);
 //		  HAL_UART_Transmit_DMA(&huart1, receiveData, Size);
 		  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, receiveData, sizeof(receiveData));
@@ -265,7 +265,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 // DMA传输完成回调函数
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if (huart->Instance == USART1)  // 确保是 USART1 传输完毕
+    if (huart->Instance == USART1)  // 确保�? USART1 传输完毕
     {
     	LCD_ShowString(0,0,200,24,24, "Finish");
         txCompleteFlag = 1;  // 设置传输完成标志
